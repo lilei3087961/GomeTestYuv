@@ -259,27 +259,27 @@ int get_camera_buff()
         return 1;
 }
 //将nv21合并到yv12图像中
-void gome_merge_yuv2yuv_for_yv12(const char *yuvImgPath,int width_small,int height_small,unsigned char * camera_buff,int width_big,int height_big)
+void gome_merge_nv21_to_yv12(const char *yuvImgPath,int width_small,int height_small,unsigned char * camera_buff,int width_big,int height_big)
 {
         int k = width_small;
         int j = height_small;
-        //为从sdcard读取的nv21图片分配内存
+        //为从sdcard读取的nv21图片分配内存,防止同一个变量被两个方法调用
 		yuv420_buff = (unsigned char*)malloc(width_small * height_small * 1.5);
 		if(yuv420_buff ==  NULL){
-			printf("lilei getPropertyMultiScan() merge_yuv2yuv_for_yv12() step3 yuv420_buff malloc yuv420_buff err\n");
+			printf("lilei getPropertyMultiScan() gome_merge_nv21_to_yv12() step3 yuv420_buff malloc yuv420_buff err\n");
 		}else{
 			memset(yuv420_buff, 0, width_small * height_small * 1.5);
 		}
         //为nv21转换为yv12数据分配内存
         yuv420_buff_for_yv12 = (unsigned char*)malloc(width_small * height_small * 1.5);
 		if(yuv420_buff_for_yv12 ==  NULL){
-			ALOGD("lilei getPropertyMultiScan() gome_merge_yuv2yuv_for_yv12() step3 malloc yuv420_buff_for_yv12 err\n");
+			ALOGD("lilei getPropertyMultiScan() gome_merge_nv21_to_yv12() step3 malloc yuv420_buff_for_yv12 err\n");
 		}else{
 			memset(yuv420_buff_for_yv12, 0, width_small * height_small * 1.5);
 		}
 
         FILE *pfile = fopen(yuvImgPath,"rb");
-        ALOGD("lilei getPropertyMultiScan() gome_merge_yuv2yuv_for_yv12() 111 pfile:%p \n",pfile);
+        ALOGD("lilei getPropertyMultiScan() gome_merge_nv21_to_yv12() 111 pfile:%p \n",pfile);
         fseek(pfile,0,SEEK_END); /* 定位到文件末尾 */
         int len= ftell(pfile);
         fseek(pfile,0,SEEK_SET); /* 定位到文件开头 */
@@ -288,23 +288,23 @@ void gome_merge_yuv2yuv_for_yv12(const char *yuvImgPath,int width_small,int heig
         //gome_dump_yuv(yuv420_buff_for_yv12,width_small*height_small*3/2,"out/qrd_image_yuv420.yuv");
         Nv21ToYv12(yuv420_buff,yuv420_buff_for_yv12,width_small,height_small); //将nv21转码成yv12
         fclose(pfile);
-        ALOGD("lilei getPropertyMultiScan() gome_merge_yuv2yuv_for_yv12() 222 yuv420_buff_for_yv12:%p len:%d  test 11.27\n",yuv420_buff_for_yv12,len);
+        ALOGD("lilei getPropertyMultiScan() gome_merge_nv21_to_yv12() 222 yuv420_buff_for_yv12:%p len:%d  test 11.27\n",yuv420_buff_for_yv12,len);
         merge_two_yuv_for_yv12(camera_buff,width_big,height_big,yuv420_buff_for_yv12,width_small,height_small);
         if(yuv420_buff_for_yv12 != NULL){
-			ALOGD("lilei getPropertyMultiScan() gome_merge_yuv2yuv_for_yv12() 331 yuv420_buff_for_yv12 != NULL call free()");
+			ALOGD("lilei getPropertyMultiScan() gome_merge_nv21_to_yv12() 331 yuv420_buff_for_yv12 != NULL call free()");
 			free(yuv420_buff_for_yv12);
 		}else{
-			ALOGD("lilei getPropertyMultiScan() gome_merge_yuv2yuv_for_yv12() 332 yuv420_buff_for_yv12 == NULL");
+			ALOGD("lilei getPropertyMultiScan() gome_merge_nv21_to_yv12() 332 yuv420_buff_for_yv12 == NULL");
 		}
         if(yuv420_buff != NULL){
-			ALOGD("lilei getPropertyMultiScan() gome_merge_yuv2yuv_for_yv12() 441 yuv420_buff != NULL call free()");
+			ALOGD("lilei getPropertyMultiScan() gome_merge_nv21_to_yv12() 441 yuv420_buff != NULL call free()");
 			free(yuv420_buff);
 		}else{
-			ALOGD("lilei getPropertyMultiScan() gome_merge_yuv2yuv_for_yv12() 442 yuv420_buff == NULL");
+			ALOGD("lilei getPropertyMultiScan() gome_merge_nv21_to_yv12() 442 yuv420_buff == NULL");
 		}
 }
-//将yuv420合并到nv21图像中
-void gome_merge_yuv2yuv_for_nv21(const char *yuvImgPath,int width_small,int height_small,unsigned char * camera_buff,int width_big,int height_big)
+//将nv21合并到nv21图像中
+void gome_merge_nv21_to_nv21(const char *yuvImgPath,int width_small,int height_small,unsigned char * camera_buff,int width_big,int height_big)
 {
         int k = width_small;
         int j = height_small;
@@ -312,13 +312,13 @@ void gome_merge_yuv2yuv_for_nv21(const char *yuvImgPath,int width_small,int heig
         //为yuv422转换为nv21数据分配内存
         yuv420_buff_for_nv21 = (unsigned char*)malloc(width_small * height_small * 1.5);
 	if(yuv420_buff_for_nv21 ==  NULL){
-		ALOGD("lilei getPropertyMultiScan() gome_merge_yuv2yuv_for_nv21() step3  malloc yuv420_buff_for_nv21 err\n");
+		ALOGD("lilei getPropertyMultiScan() gome_merge_nv21_to_nv21() step3  malloc yuv420_buff_for_nv21 err\n");
 	}else{
 		memset(yuv420_buff_for_nv21, 0, width_small * height_small * 1.5);
 	}
 
         FILE *pfile = fopen(yuvImgPath,"rb");
-        ALOGD("lilei getPropertyMultiScan() gome_merge_yuv2yuv_for_nv21() 111 pfile:%p \n",pfile);
+        ALOGD("lilei getPropertyMultiScan() gome_merge_nv21_to_nv21() 111 pfile:%p \n",pfile);
         fseek(pfile,0,SEEK_END); /* 定位到文件末尾 */
         int len= ftell(pfile);
         fseek(pfile,0,SEEK_SET); /* 定位到文件开头 */
@@ -327,13 +327,13 @@ void gome_merge_yuv2yuv_for_nv21(const char *yuvImgPath,int width_small,int heig
         //gome_dump_yuv(yuv420_buff_for_nv21,width_small*height_small*3/2,"/sdcard/DCIM/qrd_image_yuv420.yuv");
         //YUV422ToYv12(yuyv_buff,yuv420_buff_for_nv21,width_small,height_small); //将yuyv422转码成yv12
         fclose(pfile);
-        ALOGD("lilei getPropertyMultiScan() gome_merge_yuv2yuv_for_nv21() 222 yuv420_buff_for_nv21:%p len:%d  \n",yuv420_buff_for_nv21,len);
+        ALOGD("lilei getPropertyMultiScan() gome_merge_nv21_to_nv21() 222 yuv420_buff_for_nv21:%p len:%d  \n",yuv420_buff_for_nv21,len);
         merge_two_yuv_for_nv21(camera_buff,width_big,height_big,yuv420_buff_for_nv21,width_small,height_small);
         if(yuv420_buff_for_nv21 != NULL){
-        	ALOGD("lilei getPropertyMultiScan() gome_merge_yuv2yuv_for_nv21() 331 yuv420_buff_for_nv21 != NULL call free()");
+        	ALOGD("lilei getPropertyMultiScan() gome_merge_nv21_to_nv21() 331 yuv420_buff_for_nv21 != NULL call free()");
         	free(yuv420_buff_for_nv21);
         }else{
-        	ALOGD("lilei getPropertyMultiScan() gome_merge_yuv2yuv_for_nv21() 332 yuv420_buff_for_nv21 == NULL");
+        	ALOGD("lilei getPropertyMultiScan() gome_merge_nv21_to_nv21() 332 yuv420_buff_for_nv21 == NULL");
     	}
 
 }

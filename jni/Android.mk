@@ -25,6 +25,6 @@ LOCAL_SHARED_LIBRARIES := \
 	libutils \
     liblog  \
 
-LOCAL_MODULE:= libGomeTestYuv
+LOCAL_MODULE:= libGomeMultiScan
 
 include $(BUILD_SHARED_LIBRARY)
