@@ -17,7 +17,7 @@ LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 LOCAL_SRC_FILES := com_gome_gometestyuv_TestManager.cpp \
               color.c \
-              testYuv.c \
+              gomeMultiScan.c \
               utils.c   
 
 LOCAL_SHARED_LIBRARIES := \

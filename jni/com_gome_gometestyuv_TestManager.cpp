@@ -15,7 +15,7 @@
 #ifdef __cplusplus 
 extern "C" { 
 #endif
-#include "testYuv.h"
+#include "gomeMultiScan.h"
 #ifdef __cplusplus
 }
 #endif
