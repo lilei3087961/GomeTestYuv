@@ -1,10 +1,10 @@
 # GomeTestYuv
 万能扫功能：实现编译so库，frameworkjava中引用jni引用so库，编译jni jar文件
 1.编译so库 
-~/codes/gm_7.0_mtk6750_develop/packages/apps/GomeTestYuv/jni
+~/codes/项目名称/packages/apps/GomeTestYuv/jni
 执行 mm -B 编译到out下面的lib和lib64 目录libGomeTestYuv.so
 2.编译jar包
-~/codes/gm_7.0_mtk6750_develop/packages/apps/GomeTestYuv/
+~/codes/项目名称/packages/apps/GomeTestYuv/
 执行 mm -B 编译到out下面的.../GomeTestYuv_intermediates/javalib.jar
 将编译出来的 javalib.jar拷贝到自定义的目录F:\frameworks\base\libs\gomeTestYuv\libs\中
 注：TestManager.java System.loadLibrary("GomeTestYuv");  动态加载libGomeTestYuv.so
