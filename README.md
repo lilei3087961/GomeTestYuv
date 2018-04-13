@@ -12,3 +12,46 @@
 3.修改framework引用
 /frameworks/base/Android.mk
 在Android.mk 添加对上述拷贝过来的javalib.jar的引用
+
+引用方法如下patch:
+lilei@gome07-OptiPlex-7040:~/codes/gm_7.0_mtk6750_develop_verify/frameworks/base$ git diff
+diff --git a/Android.mk b/Android.mk
+index 95a6aa1..9066045 100755
+--- a/Android.mk
++++ b/Android.mk
+@@ -43,6 +43,14 @@ gome_res_source_path := APPS/gome-res_intermediates/src
+ # embedded builds use nothing in frameworks/base
+ ifneq ($(ANDROID_BUILD_EMBEDDED),true)
+ 
++
++
++##################################################for test yuv by lilei
++include $(CLEAR_VARS)
++LOCAL_PREBUILT_STATIC_JAVA_LIBRARIES := libGomeTestYuv:libs/gomeTestYuv/libs/javalib.jar
++include $(BUILD_MULTI_PREBUILT)
++##################################################
++
+ include $(CLEAR_VARS)
+ 
+ # FRAMEWORKS_BASE_SUBDIRS comes from build/core/pathmap.mk
+@@ -623,6 +631,8 @@ ifeq ($(MTK_3GDONGLE_SUPPORT),yes)
+ else
+ # LOCAL_STATIC_JAVA_LIBRARIES += viatelecomjar
+ endif
++#test by lilei
++LOCAL_STATIC_JAVA_LIBRARIES += libGomeTestYuv
+ 
+ # M: need to explicitly declare these required shared libraries
+ LOCAL_REQUIRED_MODULES := libRS librs_jni
+diff --git a/core/java/android/hardware/Camera.java b/core/java/android/hardware/Camera.java
+old mode 100644
+new mode 100755
+index 347eb21..01a5e10
+--- a/core/java/android/hardware/Camera.java
++++ b/core/java/android/hardware/Camera.java
+@@ -70,7 +70,7 @@ import android.hardware.camera2.CameraCharacteristics;
+ 
+ 
+ import static android.system.OsConstants.*;
+-
++import com.gome.gometestyuv.TestManager;
