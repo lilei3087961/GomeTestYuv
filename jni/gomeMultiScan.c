@@ -47,14 +47,14 @@ typedef struct{
 BUFTYPE *usr_buf;
 
 static unsigned int n_buffer = 0;  
-unsigned char* mjpeg_buff;
-unsigned char* yuyv_buff;
-unsigned char* yuv420_buff;
-unsigned char* yuv420_buff_for_yv12;
-unsigned char* yuv420_buff_for_nv21;
-unsigned char* yuv420_buff_big;
-unsigned char* nv21_test_buff;
-unsigned char* nv21_test_buff_big;
+unsigned char* mjpeg_buff = NULL;
+unsigned char* yuyv_buff = NULL;
+unsigned char* yuv420_buff = NULL;
+unsigned char* yuv420_buff_for_yv12 = NULL;
+unsigned char* yuv420_buff_for_nv21 = NULL;
+unsigned char* yuv420_buff_big = NULL;
+unsigned char* nv21_test_buff = NULL;
+unsigned char* nv21_test_buff_big = NULL;
 
 int gome_dump_yuv(void *addr, int length,char* name)
 {
@@ -379,12 +379,14 @@ void gome_merge_nv21_to_yv12(const char *yuvImgPath,int width_small,int height_s
 	if(yuv420_buff_for_yv12 != NULL){
 		ALOGD("libGomeMultiScan gome_merge_nv21_to_yv12() 331 yuv420_buff_for_yv12 != NULL call free()");
 		free(yuv420_buff_for_yv12);
+		yuv420_buff_for_yv12 = NULL;
 	}else{
 		ALOGD("libGomeMultiScan gome_merge_nv21_to_yv12() 332 yuv420_buff_for_yv12 == NULL");
 	}
 	if(yuv420_buff != NULL){
-		ALOGD("libGomeMultiScan gome_merge_nv21_to_yv12() 441 yuv420_buff != NULL call free()");
+		ALOGD("libGomeMultiScan gome_merge_nv21_to_yv12() 441 yuv420_buff != NULL call free() ##");
 		free(yuv420_buff);
+		yuv420_buff = NULL;
 	}else{
 		ALOGD("libGomeMultiScan gome_merge_nv21_to_yv12() 442 yuv420_buff == NULL");
 	}
@@ -426,6 +428,7 @@ void gome_merge_nv21_to_nv21(const char *yuvImgPath,int width_small,int height_s
 	if(yuv420_buff_for_nv21 != NULL){
 		ALOGD("libGomeMultiScan gome_merge_nv21_to_nv21() 331 yuv420_buff_for_nv21 != NULL call free()");
 		free(yuv420_buff_for_nv21);
+		yuv420_buff_for_nv21 = NULL;
 	}else{
 		ALOGD("libGomeMultiScan gome_merge_nv21_to_nv21() 332 yuv420_buff_for_nv21 == NULL");
 	}
@@ -435,6 +438,7 @@ void relaseMemory(){
 	if(yuv420_buff != NULL){
 		ALOGD("libGomeMultiScan 11 yuv420_buff not null call free()");
 		free(yuv420_buff);
+		yuv420_buff = NULL;
 	}else{
 		ALOGD("libGomeMultiScan 222 yuv420_buff is null");
 	}
